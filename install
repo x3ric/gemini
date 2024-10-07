@@ -1,0 +1,22 @@
+#!/bin/env bash
+need() {
+    if ! command -v "$1" &>/dev/null; then
+        if command -v pacman &>/dev/null; then
+            sudo pacman -Sy --needed --noconfirm "$1"
+        else
+            echo "install $1 with your distro pkgmanager"
+        fi
+    fi
+}
+need git
+need python-rich
+git clone https://github.com/X3ric/gemini
+cd gemini
+chmod +x "./gemini"
+if [[ ":$PATH:" == *":$HOME/.local/bin:"* ]]; then
+    cp "./gemini" "$HOME/.local/bin"
+else
+    sudo cp "./gemini" "/usr/bin"
+fi 
+cd ..
+rm -rf gemini
